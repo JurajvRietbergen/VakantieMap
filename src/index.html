@@ -137,6 +137,13 @@ var pathOptions = {
   weight: 3
 }
 
+var LineCHB = L.curve(
+  [
+    'M', pChita,
+    'Q', [45.75978595038456,138.2],
+	[39.90208233734751,116.4215965127216]
+  ], pathOptions);
+
 // Beijing -> Schiphol
 var latlngs = [];
 
@@ -172,13 +179,6 @@ var LineBS = L.curve(
     'M', latlng1,
     'Q', midpointLatLng,
     latlng2
-  ], pathOptions);
-
-var LineCHB = L.curve(
-  [
-    'M', pChita,
-    'Q', [45.75978595038456,138.2],
-	[39.90208233734751,116.4215965127216]
   ], pathOptions);
 
 // Ulan-Ude -> Chita
