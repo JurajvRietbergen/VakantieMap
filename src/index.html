@@ -136,6 +136,43 @@ var pathOptions = {
   weight: 3
 }
 
+// Beijing -> Schiphol
+var latlngs = [];
+
+var latlng1 = [39.90208233734751,116.4215965127216],
+  latlng2 = [52.308039, 4.762198];
+
+var offsetX = latlng2[1] - latlng1[1],
+  offsetY = latlng2[0] - latlng1[0];
+
+var r = Math.sqrt(Math.pow(offsetX, 2) + Math.pow(offsetY, 2)),
+  theta = Math.atan2(offsetY, offsetX);
+
+var thetaOffset = (3.14 / 10);
+
+var r2 = (r / 2) / (Math.cos(thetaOffset)),
+  theta2 = theta + thetaOffset;
+
+var midpointX = (r2 * Math.cos(theta2)) + latlng1[1],
+  midpointY = (r2 * Math.sin(theta2)) + latlng1[0];
+
+var midpointLatLng = [midpointY, midpointX];
+
+latlngs.push(latlng1, midpointLatLng, latlng2);
+
+var pathOptions = {
+  color: 'blue',
+  dashArray: "30 10",
+  weight: 3
+}
+
+var LineBS = L.curve(
+  [
+    'M', latlng1,
+    'Q', midpointLatLng,
+    latlng2
+  ], pathOptions);
+
 var LineCHB = L.curve(
   [
     'M', pChita,
@@ -279,10 +316,10 @@ var LineOS = L.curve(
   ], pathOptions);
 
 // Layers
-var transMO = L.layerGroup([mSchiphol, mPulkovo, mMoskovskiy, mYaroslavsky, mBeijing, LineSP, LineML, LineYU, LineUB]);
-var transMA = L.layerGroup([mSchiphol, mPulkovo, mMoskovskiy, mYaroslavsky, mBeijing, LineSP, LineML, LineYU, LineUC,LineCHB]);
-var transSK = L.layerGroup([mSchiphol, mPulkovo, mMoskovskiy, mYaroslavsky, mVladivostok, mDonghae, mSeoulAP, mSeoulAP, LineSP, LineML, LineYU, LineUC, LineCTK, LineKV, LineVD, LineDS]);
-var transSJ = L.layerGroup([mSchiphol, mPulkovo, mMoskovskiy, mYaroslavsky, mDonghae, mSakaiminato, mKyoto, mOsaka, LineSP, LineML, LineYU, LineUC, LineCTK, LineKV, LineVD, LineDSM, LineSMK]);
+var transMO = L.layerGroup([mSchiphol, mPulkovo, mMoskovskiy, mYaroslavsky, mBeijing, LineSP, LineML, LineYU, LineUB, LineBS]);
+var transMA = L.layerGroup([mSchiphol, mPulkovo, mMoskovskiy, mYaroslavsky, mBeijing, LineSP, LineML, LineYU, LineUC,LineCHB, LineBS]);
+var transSK = L.layerGroup([mSchiphol, mPulkovo, mMoskovskiy, mYaroslavsky, mVladivostok, mDonghae, mSeoul, mSeoulAP, LineSP, LineML, LineYU, LineUC, LineCTK, LineKV, LineVD, LineDS, LineSS]);
+var transSJ = L.layerGroup([mSchiphol, mPulkovo, mMoskovskiy, mYaroslavsky, mDonghae, mSakaiminato, mKyoto, mOsaka, LineSP, LineML, LineYU, LineUC, LineCTK, LineKV, LineVD, LineDSM, LineSMK, LineOS]);
 
 
 var overlayMaps = {
