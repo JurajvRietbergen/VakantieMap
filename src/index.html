@@ -28,12 +28,21 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r
 	layers:[transMO, transMA,transSK,transSJK, transSJT]
 }).addTo(map);
 
+// Remove content on map click
+map.on('click', function () {
+    myCustomControl.setContent('');
+});
 
 // Makers
 var mSchiphol = L.marker([52.308039, 4.762198]).bindTooltip("<b>Schiphol<b>")
+  mSchiphol.on('click', function () {
+    myCustomControl.setContent('Schiphol Aiport');
+  });
 
 var mPulkovo = L.marker([59.80188714299779,30.271961232351707]).bindTooltip("<b>Pulkovo<b>")
-
+  mPulkovo.on('click', function () {
+    myCustomControl.setContent('Pulkovo Aiport');
+  });
 var mMoskovskiy = L.marker([59.92940773248788,30.36217002031681]).bindTooltip("<b>Moskovskiy Trainstation<b>")
 	
 var mLeningradsky = L.marker([55.7288731827477,37.640874416699035]).bindTooltip("<b>Leningradsky Trainstation<b>")
@@ -106,7 +115,6 @@ var LineSP = L.curve(
     'Q', midpointLatLng,
     latlng2
   ], pathOptions);	
-
 
 // St.Petersburg -> Moscow
 var latlngs = [
@@ -419,6 +427,24 @@ var overlayMaps = {
 };
 
 L.control.layers(null,overlayMaps).addTo(map);
+
+var MyCustomControl = L.Control.extend({
+    options: {
+        // Default control position
+        position: 'bottomleft'
+    },
+    onAdd: function (map) {
+        // Create a container with classname and return it
+        return L.DomUtil.create('div', 'my-custom-control');
+    },
+    setContent: function (content) {
+        // Set the innerHTML of the container
+        this.getContainer().innerHTML = this.getContainer().innerHTML + "<br>" + content;
+    }
+});
+
+// Assign to a variable so you can use it later and add it to your map
+var myCustomControl =  new MyCustomControl().addTo(map);
 
 </script>
 </body>

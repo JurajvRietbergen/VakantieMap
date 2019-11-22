@@ -11,3 +11,16 @@ html, body {
     margin: 0;
     padding: 0;
 }
+
+.my-custom-control {
+    padding:5px 10px;
+    background: rgba(0,0,0,0.5);
+    color: #fff;
+    font-size: 11px;
+    line-height: 18px;
+    border-radius: 5px;
+}
+
+.my-custom-control:empty {
+    display: none;
+}
