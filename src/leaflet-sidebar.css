@@ -7,7 +7,7 @@
   z-index: 2000; }
   .sidebar.collapsed {
     /* Need way of making line below responsive */
-    height: 160px;
+    height: 120px;
     width: 40px; }
   @media (min-width: 768px) {
     .sidebar {

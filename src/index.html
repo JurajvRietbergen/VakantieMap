@@ -27,9 +27,8 @@
   <div class="sidebar-tabs">
       <ul role="tablist">
           <li><a href="#home" role="tab"><i class="fas fa-bars"></i></a></li>
-          <li><a href="#profile" role="tab"><i class="fas fa-route"></i></a></li>
-          <li class="disabled"><a href="#messages" role="tab"><i class="fas fa-envelope"></i></a></li>
-          <li><a href="https://github.com/Turbo87/sidebar-v2" role="tab" target="_blank"><i class="fab fa-github"></i></a></li>
+          <li><a href="#routeplanner" role="tab"><i class="fas fa-route"></i></a></li>
+          <li><a href="#settings" role="tab"><i class="fas fa-cog"></i></a></li>
       </ul>
   </div>
 
@@ -51,11 +50,18 @@
       </div>
 
       <div class="sidebar-pane" id="routeplanner">
-          <h1 class="sidebar-header">Route Planner<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
+          <h1 class="sidebar-header">
+            Route Planner
+            <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
+          </h1>
+
+          <p>Choose starting point</p>
+
+          <input type="text" name="depature" placeholder="Input a location...">
       </div>
 
-      <div class="sidebar-pane" id="messages">
-          <h1 class="sidebar-header">Messages<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
+      <div class="sidebar-pane" id="settings">
+          <h1 class="sidebar-header">Settings<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
       </div>
   </div>
 </div>
