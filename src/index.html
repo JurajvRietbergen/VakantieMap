@@ -25,7 +25,7 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r
 	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
 	subdomains: 'abcd',
 	maxZoom: 19,
-	layers:[transMO, transMA,transSK,transSJ]
+	layers:[transMO, transMA,transSK,transSJK, transSJT]
 }).addTo(map);
 
 
@@ -44,17 +44,23 @@ var mBeijing = L.marker([39.90208233734751,116.4215965127216]).bindPopup("<b>Bei
 
 var mVladivostok = L.marker([43.11161047086922,131.88140754402076]).bindPopup("<b>Vladivostok Trainstation<b>")
 
+var mVladivostokAP = L.marker([43.3908,132.151]).bindPopup("<b>Vladivostok Knevichi Airport<b>")
+
 var mDonghae = L.marker([37.49684265833768,129.13402439854494]).bindPopup("<b>Donghae Port<b>")
 
 var mSeoul = L.marker([37.5666791,126.9782914]).bindPopup("<b>Seoul<b>")
 
 var mSeoulAP = L.marker([37.5590275,126.7932985]).bindPopup("<b>Seoul Airport<b>")
 
-var mSakaiminato = L.marker([35.54525765334201,133.2220610548145]).bindPopup("<b>Sakai-Minato Port<b>")
+var mSakaiminato = L.marker([35.547064,133.252472]).bindPopup("<b>Sakai-Minato Port<b>")
 
 var mKyoto = L.marker([35.021041,135.7556075]).bindPopup("<b>Kyoto<b>")
 
 var mOsaka = L.marker([34.4342045,135.222523]).bindPopup("<b>Osaka-KIX Airport<b>")
+
+var mTokyoAP = L.marker([35.770666,140.387168]).bindPopup("<b>Tokyo Narita Airport<b>")
+
+var mTokyo = L.marker([35.674659,139.765781]).bindPopup("<b>Tokyo<b>")
 
 // Markerless points
 var pChita = [52.033409,113.500893]; // Point where Manchurian line goes into china
@@ -315,18 +321,101 @@ var LineOS = L.curve(
     latlng2
   ], pathOptions);
 
+// Vladivostok Knevichi -> Tokyo Narita
+var latlngs = [];
+
+var latlng1 = [43.3908,132.151],
+  latlng2 = [35.770666,140.387168];
+
+var offsetX = latlng2[1] - latlng1[1],
+  offsetY = latlng2[0] - latlng1[0];
+
+var r = Math.sqrt(Math.pow(offsetX, 2) + Math.pow(offsetY, 2)),
+  theta = Math.atan2(offsetY, offsetX);
+
+var thetaOffset = (3.14 / 10);
+
+var r2 = (r / 2) / (Math.cos(thetaOffset)),
+  theta2 = theta + thetaOffset;
+
+var midpointX = (r2 * Math.cos(theta2)) + latlng1[1],
+  midpointY = (r2 * Math.sin(theta2)) + latlng1[0];
+
+var midpointLatLng = [midpointY, midpointX];
+
+latlngs.push(latlng1, midpointLatLng, latlng2);
+
+var pathOptions = {
+  color: 'blue',
+  dashArray: "30 10",
+  weight: 3
+}
+
+var LineVAT = L.curve(
+  [
+    'M', latlng1,
+    'Q', midpointLatLng,
+    latlng2
+  ], pathOptions);
+
+// Tokyo Narita -> Tokyo
+var latlngs = [
+	mTokyoAP.getLatLng(),
+	mTokyo.getLatLng()
+];
+var LineTT = L.polyline(latlngs, {color: 'blue'});
+
+// Tokyo Narita -> Schiphol
+var latlngs = [];
+
+var latlng1 = [35.770666,140.387168],
+  latlng2 = [52.308039, 4.762198];
+
+var offsetX = latlng2[1] - latlng1[1],
+  offsetY = latlng2[0] - latlng1[0];
+
+var r = Math.sqrt(Math.pow(offsetX, 2) + Math.pow(offsetY, 2)),
+  theta = Math.atan2(offsetY, offsetX);
+
+var thetaOffset = (3.14 / 10);
+
+var r2 = (r / 2) / (Math.cos(thetaOffset)),
+  theta2 = theta + thetaOffset;
+
+var midpointX = (r2 * Math.cos(theta2)) + latlng1[1],
+  midpointY = (r2 * Math.sin(theta2)) + latlng1[0];
+
+var midpointLatLng = [midpointY, midpointX];
+
+latlngs.push(latlng1, midpointLatLng, latlng2);
+
+var pathOptions = {
+  color: 'blue',
+  dashArray: "30 10",
+  weight: 3
+}
+
+var LineTS = L.curve(
+  [
+    'M', latlng1,
+    'Q', midpointLatLng,
+    latlng2
+  ], pathOptions);
+
 // Layers
 var transMO = L.layerGroup([mSchiphol, mPulkovo, mMoskovskiy, mYaroslavsky, mBeijing, LineSP, LineML, LineYU, LineUB, LineBS]);
 var transMA = L.layerGroup([mSchiphol, mPulkovo, mMoskovskiy, mYaroslavsky, mBeijing, LineSP, LineML, LineYU, LineUC,LineCHB, LineBS]);
 var transSK = L.layerGroup([mSchiphol, mPulkovo, mMoskovskiy, mYaroslavsky, mVladivostok, mDonghae, mSeoul, mSeoulAP, LineSP, LineML, LineYU, LineUC, LineCTK, LineKV, LineVD, LineDS, LineSS]);
-var transSJ = L.layerGroup([mSchiphol, mPulkovo, mMoskovskiy, mYaroslavsky, mDonghae, mSakaiminato, mKyoto, mOsaka, LineSP, LineML, LineYU, LineUC, LineCTK, LineKV, LineVD, LineDSM, LineSMK, LineOS]);
+var transSJK = L.layerGroup([mSchiphol, mPulkovo, mMoskovskiy, mYaroslavsky, mVladivostok, mDonghae, mSakaiminato, mKyoto, mOsaka, LineSP, LineML, LineYU, LineUC, LineCTK, LineKV, LineVD, LineDSM, LineSMK, LineOS]);
+var transSJT = L.layerGroup([mSchiphol, mPulkovo, mMoskovskiy, mYaroslavsky, mVladivostok, mTokyoAP, mTokyo, LineSP, LineML, LineYU, LineUC, LineCTK, LineKV, LineVAT, LineTT, LineTS]);
 
 
 var overlayMaps = {
 	"Trans-Mongolian": transMO,
 	 "Trans-Manchurian": transMA,
 	 "Trans-Siberian Korea": transSK,
-	 "Trans-Siberian Japan": transSJ
+	 "Trans-Siberian Japan-Kyoto": transSJK,
+   "Trans-Siberian Japan-Tokyo": transSJT
 };
 
 L.control.layers(null,overlayMaps).addTo(map);
