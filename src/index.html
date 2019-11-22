@@ -10,13 +10,55 @@
 
 	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ==" crossorigin=""/>
 	<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js" integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew==" crossorigin=""></script>
-	<!-- <script src="leaflet-providers.js"></script> -->
-	<script src="leaflet.curve.js"></script>
+  <script src="leaflet-sidebar.js"></script>
+  <script src="leaflet.curve.js"></script>
+  <script src="https://kit.fontawesome.com/b68c726e4c.js" crossorigin="anonymous"></script>
   <link rel="stylesheet" type="text/css" href="style.css">
+  <link rel="stylesheet" href="leaflet-sidebar.css" />
 </head>
+
 <body>
 
-<div id="mapid"></div>
+<div id="mapid" class="sidebar-map"></div>
+
+<!-- Start Sidebar -->
+<div id="sidebar" class="sidebar collapsed">
+  <!-- Nav tabs -->
+  <div class="sidebar-tabs">
+      <ul role="tablist">
+          <li><a href="#home" role="tab"><i class="fas fa-bars"></i></a></li>
+          <li><a href="#profile" role="tab"><i class="fas fa-route"></i></a></li>
+          <li class="disabled"><a href="#messages" role="tab"><i class="fas fa-envelope"></i></a></li>
+          <li><a href="https://github.com/Turbo87/sidebar-v2" role="tab" target="_blank"><i class="fab fa-github"></i></a></li>
+      </ul>
+  </div>
+
+  <!-- Tab panes -->
+  <div class="sidebar-content">
+      <div class="sidebar-pane" id="home">
+          <h1 class="sidebar-header">
+              Vakantie Map
+              <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
+          </h1>
+
+          <p class="intro">Gegroet kinders, welkom bij dit knapperig mappie die jou de weg gaat wijzen naar reis mogelijkheden! Als eerst snel even een beetje uitleg.</p>
+
+          <p class="lorem">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
+
+          <p class="lorem">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
+
+          <p class="lorem">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
+      </div>
+
+      <div class="sidebar-pane" id="routeplanner">
+          <h1 class="sidebar-header">Route Planner<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
+      </div>
+
+      <div class="sidebar-pane" id="messages">
+          <h1 class="sidebar-header">Messages<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
+      </div>
+  </div>
+</div>
 
 <script>
 // Basemap
@@ -73,11 +115,11 @@ var mTokyo = L.marker([35.674659,139.765781]).bindTooltip("<b>Tokyo<b>");
 
 // Markerless points
 var pChita = [52.033409,113.500893]; // Point where Manchurian line goes into china
-var pTakhtamygda = [54.1088,123.609];
-var pKhabarovsk = [48.4814,135.077];
-var pUlanUde = [51.84096188110149,107.58316250358831];
-var pUlaanbaatar = [47.90863506880966,106.8839715299694];
-var pHarbin = [45.75978595038456,126.62382161193685];
+var pTakhtamygda = [54.1088,123.609]; // Point between Chita and Khabarovsk
+var pKhabarovsk = [48.4814,135.077]; // Point between Takhthamygda and Vladivostok
+var pUlanUde = [51.84096188110149,107.58316250358831]; // Point where Trans Siberian and Trans Manchurian line split off from Trans Mongolian
+var pUlaanbaatar = [47.90863506880966,106.8839715299694]; // Capital of Mongolia
+var pHarbin = [45.75978595038456,126.62382161193685]; // Point between Chita and Beijing on the Trans Manchurian line
 
 // Schiphol -> Pulkovo
 var latlngs = [];
@@ -122,6 +164,9 @@ var latlngs = [
     mLeningradsky.getLatLng()
 ];
 var LineML = L.polyline(latlngs, {color: 'blue'});
+LineML.on('click', function () {
+    myCustomControl.setContent('LineML');
+  });
 
 // Moscow -> Ulan-Ude
 var latlngs = [
@@ -452,6 +497,7 @@ var MyCustomControl = L.Control.extend({
 
 // Assign to a variable so you can use it later and add it to your map
 var myCustomControl =  new MyCustomControl().addTo(map);
+var sidebar = L.control.sidebar('sidebar').addTo(map);
 
 </script>
 </body>
