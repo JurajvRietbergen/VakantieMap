@@ -30,7 +30,7 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r
 
 // Remove content on map click
 map.on('click', function () {
-    myCustomControl.setContent('');
+    myCustomControl.clearContent();
 });
 
 // Makers
@@ -439,7 +439,14 @@ var MyCustomControl = L.Control.extend({
     },
     setContent: function (content) {
         // Set the innerHTML of the container
+        if(this.getContainer().innerHTML == "") {
+          this.getContainer().innerHTML = content;
+        } else {
         this.getContainer().innerHTML = this.getContainer().innerHTML + "<br>" + content;
+        }
+    },
+    clearContent: function () {
+      this.getContainer().innerHTML = "";
     }
 });
 
