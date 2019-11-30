@@ -1,0 +1,23 @@
+{
+  "name": "vakantiemap",
+  "version": "1.0.0",
+  "description": "An interactive vacation map made with D3 js to visualise the possible routes for our journey.",
+  "main": "index.js",
+  "dependencies": {
+    "leaflet": "^1.6.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JurajvRietbergen/VakantieMap.git"
+  },
+  "author": "Juraj and Marijn",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JurajvRietbergen/VakantieMap/issues"
+  },
+  "homepage": "https://github.com/JurajvRietbergen/VakantieMap#readme"
+}
